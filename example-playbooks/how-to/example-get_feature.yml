@@ -1,0 +1,24 @@
+---
+- hosts: 
+   - n9k1
+   - n9k2
+  vars_files: 
+   - feature.yml
+  tasks:
+   - name: "Get the features"
+     nxos_command: 
+       host: "{{ inventory_hostname }}"
+       command: "show feature | grep {{ item }} "
+       type: show
+       text: true
+     register: my_var
+     with_items: feature
+     failed_when: "not my_var.results"
+
+   - name: "Print the my_var"
+     debug: var=my_var
+              
+   - name: "Print Status"
+     debug: msg="The feature {{ item.item }} is enabled"
+     when: "'enabled' in item.results"
+     with_items: my_var.results
