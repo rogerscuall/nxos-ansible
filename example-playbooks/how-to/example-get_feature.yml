@@ -8,14 +8,12 @@
    - name: "Get the features"
      nxos_command: 
        host: "{{ inventory_hostname }}"
-       command: "show feature | grep {{ item }} "
+       command: "show feature | grep {{ feature }} "
        type: show
        text: true
      register: my_var
-     with_items: feature
      failed_when: "not my_var.results"
               
-   - name: "Print Status"
-     debug: msg="The feature {{ item.item }} is enabled"
-     when: "'enabled' in item.results"
-     with_items: my_var.results
+   - name: "Print status of the feature"
+     debug: msg="The feature {{ feature }} is enabled"
+     when: "'enabled' in my_var.results"
