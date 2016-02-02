@@ -14,9 +14,6 @@
      register: my_var
      with_items: feature
      failed_when: "not my_var.results"
-
-   - name: "Print the my_var"
-     debug: var=my_var
               
    - name: "Print Status"
      debug: msg="The feature {{ item.item }} is enabled"
